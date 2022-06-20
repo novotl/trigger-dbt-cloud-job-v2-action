@@ -70,7 +70,7 @@ async function executeAction() {
 
   const account_id = core.getInput('dbt_cloud_account_id');
   const job_id = core.getInput('dbt_cloud_job_id');
-  const cause = core.getInput('message');
+  const cause = core.getInput('cause');
   const git_sha = core.getInput('git_sha');
   const git_branch = core.getInput('git_branch');
   const schema_override = core.getInput('schema_override');
