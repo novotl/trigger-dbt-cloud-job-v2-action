@@ -15,6 +15,7 @@ This action triggers a job run hosted on [DBT Cloud](https://cloud.getdbt.com).
   > - interval - The interval between polls in seconds. [Default=`30`].
   > - git_sha - The git sha to check out before running this job.
   > - git_branch - The git branch to check out before running this job.
+  > - schema_override - Override the destination schema in the configured target for this job.
 
 ### Example usage.
 ```yaml

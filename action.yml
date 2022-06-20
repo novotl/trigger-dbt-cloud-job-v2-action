@@ -27,6 +27,9 @@ inputs:
   git_branch:
     description: 'The git branch to check out before running this job'
     required: false
+  schema_override:
+    description: 'Override the destination schema in the configured target for this job'
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'

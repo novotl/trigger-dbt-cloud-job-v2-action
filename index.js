@@ -25,9 +25,9 @@ function sleep(ms) {
   });
 }
 
-function run_job(account_id, job_id, cause, git_sha, git_branch) {
+function run_job(account_id, job_id, cause, git_sha, git_branch, schema_override) {
   body = {
-    cause: cause
+    'cause': cause
   }
 
   if (git_sha) {
@@ -36,6 +36,10 @@ function run_job(account_id, job_id, cause, git_sha, git_branch) {
 
   if (git_branch) {
     body['git_branch'] = git_branch
+  }
+
+  if (schema_override) {
+    body['schema_override'] = schema_override
   }
 
   return new Promise((resolve, reject) => {
@@ -69,8 +73,9 @@ async function executeAction() {
   const cause = core.getInput('message');
   const git_sha = core.getInput('git_sha');
   const git_branch = core.getInput('git_branch');
+  const schema_override = core.getInput('schema_override');
 
-  let res = await run_job(account_id, job_id, cause, git_sha, git_branch);
+  let res = await run_job(account_id, job_id, cause, git_sha, git_branch, schema_override);
   let run_id = res.data.id;
 
   core.info(`Triggered job. ${res.data.href}`);
