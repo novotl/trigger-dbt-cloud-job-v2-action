@@ -1,6 +1,5 @@
 const axios = require('axios')
 const core = require('@actions/core');
-const github = require('@actions/github');
 
 const run_status = {
   1: 'Queued',
@@ -26,43 +25,54 @@ function sleep(ms) {
   });
 }
 
-function run_job(account_id, job_id, cause) {
+function run_job(account_id, job_id, cause, git_sha, git_branch) {
+  body = {
+    cause: cause
+  }
+
+  if (git_sha) {
+    body['git_sha'] = git_sha
+  }
+
+  if (git_branch) {
+    body['git_branch'] = git_branch
+  }
 
   return new Promise((resolve, reject) => {
-    dbt_cloud_api.post(`/accounts/${account_id}/jobs/${job_id}/run/`, {
-    cause: cause
-    })
-    .then(res => {
-      resolve(res.data);
-    })
-    .catch(error => {
-      reject(error);
-    });
+    dbt_cloud_api.post(`/accounts/${account_id}/jobs/${job_id}/run/`, body)
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
   });
 }
 
 function get_job_run(account_id, run_id) {
   return new Promise((resolve, reject) => {
     dbt_cloud_api.get(`/accounts/${account_id}/runs/${run_id}/`)
-    .then(res => {
-      resolve(res.data);
-    })
-    .catch(error => {
-      reject(error);
-    });
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
   });
-} 
+}
 
 
-async function executeAction () {
+async function executeAction() {
 
-  const account_id=core.getInput('dbt_cloud_account_id');
-  const job_id=core.getInput('dbt_cloud_job_id');
-  const cause=core.getInput('message');
+  const account_id = core.getInput('dbt_cloud_account_id');
+  const job_id = core.getInput('dbt_cloud_job_id');
+  const cause = core.getInput('message');
+  const git_sha = core.getInput('git_sha');
+  const git_branch = core.getInput('git_branch');
 
-  let res = await run_job(account_id, job_id, cause);
+  let res = await run_job(account_id, job_id, cause, git_sha, git_branch);
   let run_id = res.data.id;
-  
+
   core.info(`Triggered job. ${res.data.href}`);
 
   while (true) {

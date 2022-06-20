@@ -21,6 +21,12 @@ inputs:
     description: 'The interval between polls in seconds.'
     required: false
     default: '30'
+  git_sha:
+    description: 'The git sha to check out before running this job'
+    required: false
+  git_branch:
+    description: 'The git branch to check out before running this job'
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'

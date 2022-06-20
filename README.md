@@ -13,6 +13,8 @@ This action triggers a job run hosted on [DBT Cloud](https://cloud.getdbt.com).
   > **Optional**:
   > - cause - Cause message to use. [Default=`"Triggered from Github"`].
   > - interval - The interval between polls in seconds. [Default=`30`].
+  > - git_sha - The git sha to check out before running this job.
+  > - git_branch - The git branch to check out before running this job.
 
 ### Example usage.
 ```yaml
