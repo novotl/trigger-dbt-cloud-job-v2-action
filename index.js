@@ -85,7 +85,7 @@ async function executeAction() {
     let res = await get_job_run(account_id, run_id);
     let run = res.data;
 
-    core.info(`${run.id}` - `${run_status[run.status]}`);
+    core.info(`${run.id} - ${run_status[run.status]}`);
 
     if (run.finished_at) {
       core.info('job finished');
