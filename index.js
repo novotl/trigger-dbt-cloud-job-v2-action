@@ -31,14 +31,17 @@ function run_job(account_id, job_id, cause, git_sha, git_branch, schema_override
   }
 
   if (git_sha) {
+    core.info(`Using Git SHA ${git_sha}`)
     body['git_sha'] = git_sha
   }
 
   if (git_branch) {
+    core.info(`Using Git branch ${git_branch}`)
     body['git_branch'] = git_branch
   }
 
   if (schema_override) {
+    core.info(`Using schema override ${schema_override}`)
     body['schema_override'] = schema_override
   }
 
@@ -78,14 +81,14 @@ async function executeAction() {
   let res = await run_job(account_id, job_id, cause, git_sha, git_branch, schema_override);
   let run_id = res.data.id;
 
-  core.info(`Triggered job. ${res.data.href}`);
+  core.info(`Triggered job: ${res.data.href}`);
 
   while (true) {
     await sleep(core.getInput('interval') * 1000);
     let res = await get_job_run(account_id, run_id);
     let run = res.data;
 
-    core.info(`${run.id} - ${run_status[run.status]}`);
+    core.info(`${new Date().toLocaleString()}: ${res.data.href} - ${run_status[run.status]}`);
 
     if (run.finished_at) {
       core.info('job finished');
