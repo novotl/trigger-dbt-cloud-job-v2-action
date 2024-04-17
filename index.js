@@ -12,7 +12,7 @@ const run_status = {
 
 const dbt_cloud_api = axios.create({
   baseURL: 'https://cloud.getdbt.com/api/v2/',
-  timeout: 1000,
+  timeout:  parseInt(core.getInput('dbt_cloud_timeout')),
   headers: {
     'Authorization': `Bearer ${core.getInput('dbt_cloud_token')}`,
     'Content-Type': 'application/json'
